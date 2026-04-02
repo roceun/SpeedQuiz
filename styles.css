@@ -147,9 +147,9 @@ button {
   max-width: 34rem;
 }
 
-.category-grid {
+.mode-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(96px, 1fr));
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 10px;
 }
 
@@ -159,7 +159,7 @@ button {
   gap: 10px;
 }
 
-.category-button,
+.mode-button,
 .time-button,
 .action-button,
 .restart-button,
@@ -175,7 +175,7 @@ button {
     border-color 160ms ease;
 }
 
-.category-button {
+.mode-button {
   min-height: 56px;
   padding: 10px 12px;
   border-radius: var(--radius-md);
@@ -197,7 +197,7 @@ button {
   font-weight: 700;
 }
 
-.category-button.is-selected {
+.mode-button.is-selected {
   background: var(--accent);
   color: #ffffff;
   box-shadow: 0 14px 26px rgba(255, 138, 61, 0.28);
@@ -209,7 +209,7 @@ button {
   box-shadow: 0 14px 26px rgba(77, 179, 255, 0.28);
 }
 
-.category-button:hover,
+.mode-button:hover,
 .time-button:hover,
 .action-button:hover,
 .restart-button:hover,
@@ -218,7 +218,7 @@ button {
   transform: translateY(-2px);
 }
 
-.category-button:focus-visible,
+.mode-button:focus-visible,
 .time-button:focus-visible,
 .action-button:focus-visible,
 .restart-button:focus-visible,
@@ -530,7 +530,7 @@ button {
     width: 16px;
   }
 
-  .category-button,
+  .mode-button,
   .time-button {
     min-height: 48px;
     font-size: 0.95rem;

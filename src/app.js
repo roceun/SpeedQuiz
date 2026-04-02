@@ -1,389 +1,212 @@
-const categories = [
-  {
-    key: "animals",
-    label: "동물",
-    words: [
-      "강아지",
-      "고양이",
-      "토끼",
-      "호랑이",
-      "사자",
-      "곰",
-      "여우",
-      "원숭이",
-      "코끼리",
-      "기린",
-      "얼룩말",
-      "하마",
-      "돼지",
-      "소",
-      "말",
-      "닭",
-      "오리",
-      "병아리",
-      "참새",
-      "독수리",
-      "펭귄",
-      "돌고래",
-      "고래",
-      "상어",
-      "문어",
-      "오징어",
-      "거북이",
-      "개구리",
-      "뱀",
-      "악어",
-      "사슴",
-      "다람쥐",
-      "캥거루",
-      "판다",
-      "늑대",
-    ],
-  },
-  {
-    key: "nature",
-    label: "자연",
-    words: [
-      "해",
-      "달",
-      "별",
-      "하늘",
-      "구름",
-      "비",
-      "눈",
-      "바람",
-      "번개",
-      "무지개",
-      "산",
-      "들판",
-      "강",
-      "바다",
-      "폭포",
-      "나무",
-      "꽃",
-      "잎",
-      "씨앗",
-      "흙",
-      "돌",
-      "모래",
-      "숲",
-      "섬",
-      "파도",
-      "노을",
-      "아침",
-      "밤",
-      "봄",
-      "여름",
-      "가을",
-      "겨울",
-      "이슬",
-      "안개",
-      "햇빛",
-    ],
-  },
-  {
-    key: "objects",
-    label: "사물",
-    words: [
-      "책",
-      "공책",
-      "연필",
-      "지우개",
-      "가방",
-      "책상",
-      "의자",
-      "시계",
-      "안경",
-      "우산",
-      "신발",
-      "모자",
-      "컵",
-      "접시",
-      "숟가락",
-      "포크",
-      "냄비",
-      "거울",
-      "빗",
-      "칫솔",
-      "비누",
-      "수건",
-      "침대",
-      "베개",
-      "문",
-      "창문",
-      "전화기",
-      "리모컨",
-      "공",
-      "인형",
-      "자전거",
-      "가위",
-      "풀",
-      "자",
-      "물병",
-    ],
-  },
-  {
-    key: "foods",
-    label: "음식",
-    words: [
-      "밥",
-      "김치",
-      "국수",
-      "라면",
-      "떡",
-      "빵",
-      "케이크",
-      "쿠키",
-      "사과",
-      "바나나",
-      "딸기",
-      "포도",
-      "수박",
-      "귤",
-      "복숭아",
-      "감",
-      "옥수수",
-      "감자",
-      "고구마",
-      "당근",
-      "오이",
-      "토마토",
-      "계란",
-      "우유",
-      "치즈",
-      "피자",
-      "햄버거",
-      "만두",
-      "김밥",
-      "주먹밥",
-      "초밥",
-      "요구르트",
-      "아이스크림",
-      "초콜릿",
-      "팝콘",
-    ],
-  },
-  {
-    key: "places",
-    label: "장소",
-    words: [
-      "집",
-      "학교",
-      "교실",
-      "운동장",
-      "놀이터",
-      "도서관",
-      "공원",
-      "동물원",
-      "수영장",
-      "마트",
-      "시장",
-      "병원",
-      "약국",
-      "빵집",
-      "문방구",
-      "편의점",
-      "식당",
-      "카페",
-      "영화관",
-      "미용실",
-      "경찰서",
-      "소방서",
-      "우체국",
-      "은행",
-      "박물관",
-      "미술관",
-      "캠핑장",
-      "바닷가",
-      "산길",
-      "정류장",
-      "지하철역",
-      "기차역",
-      "공항",
-      "주차장",
-      "화장실",
-    ],
-  },
-  {
-    key: "vehicles",
-    label: "탈것",
-    words: [
-      "자동차",
-      "버스",
-      "택시",
-      "경찰차",
-      "소방차",
-      "구급차",
-      "자전거",
-      "오토바이",
-      "킥보드",
-      "지하철",
-      "기차",
-      "고속버스",
-      "비행기",
-      "헬리콥터",
-      "배",
-      "요트",
-      "카누",
-      "잠수함",
-      "트럭",
-      "굴착기",
-      "불도저",
-      "트랙터",
-      "유모차",
-      "썰매",
-      "열기구",
-      "우주선",
-      "케이블카",
-      "리프트",
-      "롤러스케이트",
-      "스케이트보드",
-    ],
-  },
-  {
-    key: "jobs",
-    label: "직업",
-    words: [
-      "선생님",
-      "의사",
-      "간호사",
-      "경찰관",
-      "소방관",
-      "요리사",
-      "제빵사",
-      "농부",
-      "화가",
-      "가수",
-      "배우",
-      "작가",
-      "과학자",
-      "발명가",
-      "우주비행사",
-      "조종사",
-      "운전기사",
-      "배달원",
-      "미용사",
-      "사진가",
-      "기자",
-      "판사",
-      "수의사",
-      "약사",
-      "건축가",
-      "프로그래머",
-      "마술사",
-      "운동선수",
-      "음악가",
-      "정원사",
-    ],
-  },
-  {
-    key: "sports",
-    label: "운동",
-    words: [
-      "축구",
-      "농구",
-      "야구",
-      "배구",
-      "수영",
-      "달리기",
-      "줄넘기",
-      "태권도",
-      "유도",
-      "씨름",
-      "탁구",
-      "배드민턴",
-      "테니스",
-      "골프",
-      "양궁",
-      "체조",
-      "스케이트",
-      "스키",
-      "썰매",
-      "자전거",
-      "등산",
-      "요가",
-      "피구",
-      "훌라후프",
-      "릴레이",
-      "멀리뛰기",
-      "높이뛰기",
-      "마라톤",
-      "권투",
-      "리듬체조",
-    ],
-  },
-  {
-    key: "school",
-    label: "학교",
-    words: [
-      "교실",
-      "칠판",
-      "분필",
-      "지우개",
-      "연필",
-      "공책",
-      "책가방",
-      "필통",
-      "자",
-      "가위",
-      "풀",
-      "색연필",
-      "크레파스",
-      "급식",
-      "점심시간",
-      "쉬는시간",
-      "숙제",
-      "시험",
-      "발표",
-      "독서",
-      "미술시간",
-      "체육시간",
-      "음악시간",
-      "과학시간",
-      "도서관",
-      "운동장",
-      "급식실",
-      "보건실",
-      "교무실",
-      "방학",
-    ],
-  },
-  {
-    key: "toys",
-    label: "장난감",
-    words: [
-      "인형",
-      "블록",
-      "퍼즐",
-      "로봇",
-      "공룡 장난감",
-      "자동차 장난감",
-      "물총",
-      "비눗방울",
-      "풍선",
-      "팽이",
-      "딱지",
-      "요요",
-      "레고",
-      "보드게임",
-      "카드게임",
-      "구슬",
-      "줄인형",
-      "장난감 기차",
-      "장난감 비행기",
-      "장난감 주방",
-      "소꿉놀이",
-      "가면",
-      "망원경 장난감",
-      "현미경 장난감",
-      "마이크 장난감",
-      "악기 장난감",
-      "봉제인형",
-      "RC카",
-      "스티커북",
-      "색칠놀이",
-    ],
-  },
+const wordPairs = [
+  { korean: "강아지", english: "puppy" },
+  { korean: "고양이", english: "cat" },
+  { korean: "토끼", english: "rabbit" },
+  { korean: "호랑이", english: "tiger" },
+  { korean: "사자", english: "lion" },
+  { korean: "곰", english: "bear" },
+  { korean: "여우", english: "fox" },
+  { korean: "원숭이", english: "monkey" },
+  { korean: "코끼리", english: "elephant" },
+  { korean: "기린", english: "giraffe" },
+  { korean: "얼룩말", english: "zebra" },
+  { korean: "하마", english: "hippo" },
+  { korean: "돼지", english: "pig" },
+  { korean: "소", english: "cow" },
+  { korean: "말", english: "horse" },
+  { korean: "닭", english: "chicken" },
+  { korean: "오리", english: "duck" },
+  { korean: "참새", english: "sparrow" },
+  { korean: "독수리", english: "eagle" },
+  { korean: "펭귄", english: "penguin" },
+  { korean: "돌고래", english: "dolphin" },
+  { korean: "고래", english: "whale" },
+  { korean: "상어", english: "shark" },
+  { korean: "문어", english: "octopus" },
+  { korean: "오징어", english: "squid" },
+  { korean: "거북이", english: "turtle" },
+  { korean: "개구리", english: "frog" },
+  { korean: "뱀", english: "snake" },
+  { korean: "악어", english: "crocodile" },
+  { korean: "판다", english: "panda" },
+  { korean: "해", english: "sun" },
+  { korean: "달", english: "moon" },
+  { korean: "별", english: "star" },
+  { korean: "하늘", english: "sky" },
+  { korean: "구름", english: "cloud" },
+  { korean: "비", english: "rain" },
+  { korean: "눈", english: "snow" },
+  { korean: "바람", english: "wind" },
+  { korean: "번개", english: "lightning" },
+  { korean: "무지개", english: "rainbow" },
+  { korean: "산", english: "mountain" },
+  { korean: "강", english: "river" },
+  { korean: "바다", english: "sea" },
+  { korean: "폭포", english: "waterfall" },
+  { korean: "나무", english: "tree" },
+  { korean: "꽃", english: "flower" },
+  { korean: "잎", english: "leaf" },
+  { korean: "씨앗", english: "seed" },
+  { korean: "숲", english: "forest" },
+  { korean: "섬", english: "island" },
+  { korean: "파도", english: "wave" },
+  { korean: "노을", english: "sunset" },
+  { korean: "아침", english: "morning" },
+  { korean: "밤", english: "night" },
+  { korean: "봄", english: "spring" },
+  { korean: "여름", english: "summer" },
+  { korean: "가을", english: "autumn" },
+  { korean: "겨울", english: "winter" },
+  { korean: "책", english: "book" },
+  { korean: "공책", english: "notebook" },
+  { korean: "연필", english: "pencil" },
+  { korean: "지우개", english: "eraser" },
+  { korean: "가방", english: "bag" },
+  { korean: "책상", english: "desk" },
+  { korean: "의자", english: "chair" },
+  { korean: "시계", english: "clock" },
+  { korean: "안경", english: "glasses" },
+  { korean: "우산", english: "umbrella" },
+  { korean: "신발", english: "shoes" },
+  { korean: "모자", english: "hat" },
+  { korean: "컵", english: "cup" },
+  { korean: "접시", english: "plate" },
+  { korean: "숟가락", english: "spoon" },
+  { korean: "포크", english: "fork" },
+  { korean: "냄비", english: "pot" },
+  { korean: "거울", english: "mirror" },
+  { korean: "빗", english: "comb" },
+  { korean: "칫솔", english: "toothbrush" },
+  { korean: "비누", english: "soap" },
+  { korean: "수건", english: "towel" },
+  { korean: "침대", english: "bed" },
+  { korean: "베개", english: "pillow" },
+  { korean: "문", english: "door" },
+  { korean: "창문", english: "window" },
+  { korean: "전화기", english: "telephone" },
+  { korean: "리모컨", english: "remote control" },
+  { korean: "공", english: "ball" },
+  { korean: "인형", english: "doll" },
+  { korean: "자전거", english: "bicycle" },
+  { korean: "가위", english: "scissors" },
+  { korean: "자", english: "ruler" },
+  { korean: "물병", english: "water bottle" },
+  { korean: "밥", english: "rice" },
+  { korean: "김치", english: "kimchi" },
+  { korean: "국수", english: "noodles" },
+  { korean: "라면", english: "ramen" },
+  { korean: "떡", english: "rice cake" },
+  { korean: "빵", english: "bread" },
+  { korean: "케이크", english: "cake" },
+  { korean: "쿠키", english: "cookie" },
+  { korean: "사과", english: "apple" },
+  { korean: "바나나", english: "banana" },
+  { korean: "딸기", english: "strawberry" },
+  { korean: "포도", english: "grapes" },
+  { korean: "수박", english: "watermelon" },
+  { korean: "귤", english: "tangerine" },
+  { korean: "복숭아", english: "peach" },
+  { korean: "감자", english: "potato" },
+  { korean: "고구마", english: "sweet potato" },
+  { korean: "당근", english: "carrot" },
+  { korean: "오이", english: "cucumber" },
+  { korean: "토마토", english: "tomato" },
+  { korean: "계란", english: "egg" },
+  { korean: "우유", english: "milk" },
+  { korean: "치즈", english: "cheese" },
+  { korean: "피자", english: "pizza" },
+  { korean: "햄버거", english: "hamburger" },
+  { korean: "만두", english: "dumpling" },
+  { korean: "김밥", english: "gimbap" },
+  { korean: "초밥", english: "sushi" },
+  { korean: "요구르트", english: "yogurt" },
+  { korean: "아이스크림", english: "ice cream" },
+  { korean: "초콜릿", english: "chocolate" },
+  { korean: "팝콘", english: "popcorn" },
+  { korean: "집", english: "house" },
+  { korean: "학교", english: "school" },
+  { korean: "교실", english: "classroom" },
+  { korean: "운동장", english: "playground" },
+  { korean: "놀이터", english: "play area" },
+  { korean: "도서관", english: "library" },
+  { korean: "공원", english: "park" },
+  { korean: "동물원", english: "zoo" },
+  { korean: "수영장", english: "swimming pool" },
+  { korean: "마트", english: "supermarket" },
+  { korean: "병원", english: "hospital" },
+  { korean: "약국", english: "pharmacy" },
+  { korean: "편의점", english: "convenience store" },
+  { korean: "식당", english: "restaurant" },
+  { korean: "카페", english: "cafe" },
+  { korean: "영화관", english: "movie theater" },
+  { korean: "우체국", english: "post office" },
+  { korean: "은행", english: "bank" },
+  { korean: "박물관", english: "museum" },
+  { korean: "공항", english: "airport" },
+  { korean: "자동차", english: "car" },
+  { korean: "버스", english: "bus" },
+  { korean: "택시", english: "taxi" },
+  { korean: "경찰차", english: "police car" },
+  { korean: "소방차", english: "fire truck" },
+  { korean: "구급차", english: "ambulance" },
+  { korean: "오토바이", english: "motorcycle" },
+  { korean: "킥보드", english: "scooter" },
+  { korean: "지하철", english: "subway" },
+  { korean: "기차", english: "train" },
+  { korean: "비행기", english: "airplane" },
+  { korean: "헬리콥터", english: "helicopter" },
+  { korean: "배", english: "boat" },
+  { korean: "잠수함", english: "submarine" },
+  { korean: "트럭", english: "truck" },
+  { korean: "썰매", english: "sled" },
+  { korean: "열기구", english: "hot air balloon" },
+  { korean: "우주선", english: "spaceship" },
+  { korean: "스케이트보드", english: "skateboard" },
+  { korean: "선생님", english: "teacher" },
+  { korean: "의사", english: "doctor" },
+  { korean: "간호사", english: "nurse" },
+  { korean: "경찰관", english: "police officer" },
+  { korean: "소방관", english: "firefighter" },
+  { korean: "요리사", english: "chef" },
+  { korean: "농부", english: "farmer" },
+  { korean: "화가", english: "painter" },
+  { korean: "가수", english: "singer" },
+  { korean: "배우", english: "actor" },
+  { korean: "작가", english: "writer" },
+  { korean: "과학자", english: "scientist" },
+  { korean: "우주비행사", english: "astronaut" },
+  { korean: "조종사", english: "pilot" },
+  { korean: "기자", english: "reporter" },
+  { korean: "약사", english: "pharmacist" },
+  { korean: "건축가", english: "architect" },
+  { korean: "프로그래머", english: "programmer" },
+  { korean: "마술사", english: "magician" },
+  { korean: "운동선수", english: "athlete" },
+  { korean: "축구", english: "soccer" },
+  { korean: "농구", english: "basketball" },
+  { korean: "야구", english: "baseball" },
+  { korean: "배구", english: "volleyball" },
+  { korean: "수영", english: "swimming" },
+  { korean: "달리기", english: "running" },
+  { korean: "줄넘기", english: "jump rope" },
+  { korean: "태권도", english: "taekwondo" },
+  { korean: "탁구", english: "table tennis" },
+  { korean: "배드민턴", english: "badminton" },
+  { korean: "테니스", english: "tennis" },
+  { korean: "골프", english: "golf" },
+  { korean: "양궁", english: "archery" },
+  { korean: "체조", english: "gymnastics" },
+  { korean: "스케이트", english: "skating" },
+  { korean: "스키", english: "skiing" },
+  { korean: "등산", english: "hiking" },
+  { korean: "요가", english: "yoga" },
+  { korean: "마라톤", english: "marathon" },
+  { korean: "권투", english: "boxing" },
+];
+
+const quizModes = [
+  { key: "korean", label: "한국어 문제", description: "제시어가 한국어로 나와요." },
+  { key: "english", label: "영어 문제", description: "제시어가 영어로 나와요." },
 ];
 
 const timeOptions = [
@@ -392,14 +215,6 @@ const timeOptions = [
   { key: "3m", label: "3분", seconds: 180 },
   { key: "5m", label: "5분", seconds: 300 },
 ];
-
-const allCategory = {
-  key: "all",
-  label: "모두",
-  words: categories.flatMap((category) => category.words),
-};
-
-const categoryOptions = [allCategory, ...categories];
 
 function shuffle(items) {
   const next = [...items];
@@ -416,22 +231,31 @@ const app = document.querySelector("#app");
 
 const state = {
   screen: "start",
-  selectedCategoryKey: categoryOptions[0] ? categoryOptions[0].key : "",
+  selectedModeKey: quizModes[0].key,
   selectedTimeKey: timeOptions[0].key,
   words: [],
   currentIndex: 0,
+  roundCount: 0,
   correctCount: 0,
   remainingSeconds: null,
 };
 
 let timerId = null;
 
-function getSelectedCategory() {
-  return categoryOptions.find((category) => category.key === state.selectedCategoryKey) || null;
+function getSelectedMode() {
+  return quizModes.find((mode) => mode.key === state.selectedModeKey) || quizModes[0];
 }
 
 function getSelectedTimeOption() {
   return timeOptions.find((option) => option.key === state.selectedTimeKey) || timeOptions[0];
+}
+
+function getWordsForMode(modeKey) {
+  return wordPairs.map((pair) => (modeKey === "english" ? pair.english : pair.korean));
+}
+
+function isUnlimitedMode() {
+  return getSelectedTimeOption().seconds === null;
 }
 
 function clearTimer() {
@@ -487,11 +311,10 @@ function startTimerIfNeeded() {
 }
 
 function startGame() {
-  const category = getSelectedCategory();
-  if (!category) return;
-
-  state.words = shuffle(category.words).slice(0, 10);
+  const words = shuffle(getWordsForMode(state.selectedModeKey));
+  state.words = isUnlimitedMode() ? words.slice(0, 10) : words;
   state.currentIndex = 0;
+  state.roundCount = 1;
   state.correctCount = 0;
   state.screen = "play";
   startTimerIfNeeded();
@@ -503,15 +326,22 @@ function goToNextWord(countAsCorrect) {
     state.correctCount += 1;
   }
 
+  const unlimitedMode = isUnlimitedMode();
   const isLastWord = state.currentIndex >= state.words.length - 1;
 
-  if (isLastWord) {
+  if (unlimitedMode && isLastWord) {
     finishGame();
     return;
+  }
+
+  if (!unlimitedMode && isLastWord) {
+    state.words = shuffle(getWordsForMode(state.selectedModeKey));
+    state.currentIndex = 0;
   } else {
     state.currentIndex += 1;
   }
 
+  state.roundCount += 1;
   render();
 }
 
@@ -520,6 +350,7 @@ function resetGame() {
   state.screen = "start";
   state.words = [];
   state.currentIndex = 0;
+  state.roundCount = 0;
   state.correctCount = 0;
   state.remainingSeconds = null;
   render();
@@ -533,17 +364,17 @@ function quitGame() {
 }
 
 function renderStartScreen() {
-  const categoryButtons = categoryOptions
-    .map((category) => {
-      const selectedClass = category.key === state.selectedCategoryKey ? "is-selected" : "";
+  const modeButtons = quizModes
+    .map((mode) => {
+      const selectedClass = mode.key === state.selectedModeKey ? "is-selected" : "";
 
       return `
         <button
           type="button"
-          class="category-button ${selectedClass}"
-          data-category-key="${category.key}"
+          class="mode-button ${selectedClass}"
+          data-mode-key="${mode.key}"
         >
-          ${category.label}
+          ${mode.label}
         </button>
       `;
     })
@@ -565,6 +396,8 @@ function renderStartScreen() {
     })
     .join("");
 
+  const selectedMode = getSelectedMode();
+
   return `
     <section class="screen screen-start">
       <div class="stack">
@@ -572,13 +405,14 @@ function renderStartScreen() {
         <div class="stack">
           <h1 class="hero-title">말로 설명하고<br />친구와 맞혀요</h1>
           <p class="hero-text">
-            주제를 고르면 10개의 단어가 하나씩 나와요.
-            친구가 맞히면 <strong>정답</strong>, 못 맞히면 <strong>다음</strong>을 누르면 돼요.
+            카테고리 없이 섞인 제시어 10개가 하나씩 나와요.
+            <strong>한국어 문제</strong>와 <strong>영어 문제</strong> 중 하나를 고르고 시작하면 돼요.
           </p>
         </div>
         <div class="stack">
-          <p class="screen-label">주제를 골라요</p>
-          <div class="category-grid">${categoryButtons}</div>
+          <p class="screen-label">문제 언어를 골라요</p>
+          <div class="mode-grid">${modeButtons}</div>
+          <p class="helper-text">${selectedMode.description}</p>
         </div>
         <div class="stack">
           <p class="screen-label">시간을 골라요</p>
@@ -591,16 +425,17 @@ function renderStartScreen() {
 }
 
 function renderPlayScreen() {
-  const category = getSelectedCategory();
+  const mode = getSelectedMode();
   const word = state.words[state.currentIndex] || "";
   const timeLabel = formatTime(state.remainingSeconds);
+  const progressLabel = isUnlimitedMode() ? `${state.currentIndex + 1} / 10` : `${state.roundCount}번`;
 
   return `
     <section class="screen screen-play">
       <header class="play-header">
         <div>
-          <p class="screen-label">${category ? category.label : ""}</p>
-          <h2 class="screen-title">지금 단어를 설명해요</h2>
+          <p class="screen-label">${mode.label}</p>
+          <h2 class="screen-title">지금 제시어를 설명해요</h2>
         </div>
         <button type="button" class="icon-button" data-action="quit" aria-label="게임 종료">
           <span class="icon-close" aria-hidden="true">
@@ -613,7 +448,7 @@ function renderPlayScreen() {
       <div class="play-status-grid">
         <div class="play-meta">
           <p class="helper-text">순서</p>
-          <div class="status-chip">${state.currentIndex + 1} / 10</div>
+          <div class="status-chip">${progressLabel}</div>
         </div>
         <div class="play-meta">
           <p class="helper-text">남은 시간</p>
@@ -637,6 +472,7 @@ function renderPlayScreen() {
 
 function renderResultScreen() {
   const timeOption = getSelectedTimeOption();
+  const mode = getSelectedMode();
 
   return `
     <section class="screen screen-result">
@@ -648,8 +484,9 @@ function renderResultScreen() {
       </header>
 
       <div class="result-card">
+        <p class="helper-text">${mode.label}</p>
         <p class="helper-text">${timeOption.label} 모드</p>
-        <p class="helper-text">총 10개 중</p>
+        <p class="helper-text">${isUnlimitedMode() ? "총 10개 중" : `총 ${state.roundCount}문제 진행`}</p>
         <p class="result-score">${state.correctCount}개</p>
         <p class="result-text">맞혔어요</p>
         <div class="result-actions">
@@ -661,9 +498,9 @@ function renderResultScreen() {
 }
 
 function bindEvents() {
-  app.querySelectorAll("[data-category-key]").forEach((button) => {
+  app.querySelectorAll("[data-mode-key]").forEach((button) => {
     button.addEventListener("click", () => {
-      state.selectedCategoryKey = button.dataset.categoryKey || state.selectedCategoryKey;
+      state.selectedModeKey = button.dataset.modeKey || state.selectedModeKey;
       render();
     });
   });
