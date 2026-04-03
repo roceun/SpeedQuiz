@@ -1,4 +1,4 @@
-const wordPairs = [
+const describeWordPairs = [
   { korean: "강아지", english: "puppy" },
   { korean: "고양이", english: "cat" },
   { korean: "토끼", english: "rabbit" },
@@ -204,13 +204,171 @@ const wordPairs = [
   { korean: "권투", english: "boxing" },
 ];
 
+const charadesWords = {
+  korean: [
+    "자다",
+    "뛰다",
+    "걷다",
+    "웃다",
+    "울다",
+    "춤추다",
+    "노래하다",
+    "읽다",
+    "쓰다",
+    "먹다",
+    "마시다",
+    "씻다",
+    "양치하다",
+    "머리 빗다",
+    "옷 입다",
+    "신발 신다",
+    "가방 메다",
+    "사진 찍다",
+    "전화하다",
+    "문 열다",
+    "선물 주다",
+    "박수 치다",
+    "점프하다",
+    "넘어지다",
+    "운전하다",
+    "자전거 타다",
+    "수영하다",
+    "축구",
+    "농구",
+    "야구",
+    "배구",
+    "테니스",
+    "골프",
+    "복싱",
+    "요가",
+    "스키",
+    "스케이트",
+    "줄넘기",
+    "태권도",
+    "의사",
+    "간호사",
+    "경찰관",
+    "소방관",
+    "요리사",
+    "선생님",
+    "조종사",
+    "사진사",
+    "마술사",
+    "가수",
+    "배우",
+    "원숭이",
+    "토끼",
+    "펭귄",
+    "뱀",
+    "코끼리",
+    "강아지",
+    "비행기",
+    "기차",
+    "오토바이",
+    "우산",
+    "거울",
+    "전화기",
+    "알람시계",
+  ],
+  english: [
+    "sleep",
+    "run",
+    "walk",
+    "laugh",
+    "cry",
+    "dance",
+    "sing",
+    "read",
+    "write",
+    "eat",
+    "drink",
+    "wash",
+    "brush teeth",
+    "comb hair",
+    "get dressed",
+    "put on shoes",
+    "carry a bag",
+    "take a photo",
+    "make a call",
+    "open the door",
+    "give a gift",
+    "clap",
+    "jump",
+    "fall down",
+    "drive",
+    "ride a bicycle",
+    "swim",
+    "soccer",
+    "basketball",
+    "baseball",
+    "volleyball",
+    "tennis",
+    "golf",
+    "boxing",
+    "yoga",
+    "skiing",
+    "skating",
+    "jump rope",
+    "taekwondo",
+    "doctor",
+    "nurse",
+    "police officer",
+    "firefighter",
+    "chef",
+    "teacher",
+    "pilot",
+    "photographer",
+    "magician",
+    "singer",
+    "actor",
+    "monkey",
+    "rabbit",
+    "penguin",
+    "snake",
+    "elephant",
+    "puppy",
+    "airplane",
+    "train",
+    "motorcycle",
+    "umbrella",
+    "mirror",
+    "phone",
+    "alarm clock",
+  ],
+};
+
+const playStyles = [
+  {
+    key: "describe",
+    label: "말로 설명하기",
+    title: "말로 설명하고<br />친구와 맞혀요",
+    eyebrow: "2인용 단어 게임",
+    description: "말로 힌트를 주면서 빠르게 맞혀요.",
+    helper:
+      "카테고리 없이 섞인 제시어가 하나씩 나와요. 말로 설명하면서 친구가 정답을 맞히면 돼요.",
+    playTitle: "지금 제시어를 설명해요",
+    resultLabel: "말로 설명하기",
+  },
+  {
+    key: "charades",
+    label: "몸으로 표현하기",
+    title: "몸짓으로 표현하고<br />친구와 맞혀요",
+    eyebrow: "파티 게임 모드",
+    description: "말하지 않고 몸짓으로 힌트를 줘요.",
+    helper:
+      "행동, 스포츠, 직업, 동물처럼 몸으로 표현하기 좋은 제시어가 나와요. 말 대신 몸짓으로만 알려줘요.",
+    playTitle: "지금 제시어를 몸으로 표현해요",
+    resultLabel: "몸으로 표현하기",
+  },
+];
+
 const quizModes = [
   { key: "korean", label: "한국어 문제", description: "제시어가 한국어로 나와요." },
   { key: "english", label: "영어 문제", description: "제시어가 영어로 나와요." },
 ];
 
 const timeOptions = [
-  { key: "unlimited", label: "무제한", seconds: null },
+  { key: "unlimited", label: "10문제", seconds: null },
   { key: "1m", label: "1분", seconds: 60 },
   { key: "3m", label: "3분", seconds: 180 },
   { key: "5m", label: "5분", seconds: 300 },
@@ -227,10 +385,19 @@ function shuffle(items) {
   return next;
 }
 
+const wordCollections = {
+  describe: {
+    korean: describeWordPairs.map((pair) => pair.korean),
+    english: describeWordPairs.map((pair) => pair.english),
+  },
+  charades: charadesWords,
+};
+
 const app = document.querySelector("#app");
 
 const state = {
   screen: "start",
+  selectedPlayStyleKey: playStyles[0].key,
   selectedModeKey: quizModes[0].key,
   selectedTimeKey: timeOptions[0].key,
   words: [],
@@ -238,9 +405,15 @@ const state = {
   roundCount: 0,
   correctCount: 0,
   remainingSeconds: null,
+  startedAt: null,
+  elapsedSeconds: 0,
 };
 
 let timerId = null;
+
+function getSelectedPlayStyle() {
+  return playStyles.find((style) => style.key === state.selectedPlayStyleKey) || playStyles[0];
+}
 
 function getSelectedMode() {
   return quizModes.find((mode) => mode.key === state.selectedModeKey) || quizModes[0];
@@ -250,8 +423,9 @@ function getSelectedTimeOption() {
   return timeOptions.find((option) => option.key === state.selectedTimeKey) || timeOptions[0];
 }
 
-function getWordsForMode(modeKey) {
-  return wordPairs.map((pair) => (modeKey === "english" ? pair.english : pair.korean));
+function getWordsForSelection(playStyleKey, modeKey) {
+  const playStyleWords = wordCollections[playStyleKey] || wordCollections.describe;
+  return playStyleWords[modeKey] || playStyleWords.korean;
 }
 
 function isUnlimitedMode() {
@@ -266,15 +440,22 @@ function clearTimer() {
 }
 
 function formatTime(seconds) {
-  if (seconds === null) return "무제한";
+  if (seconds === null) return "10문제";
 
   const minutes = Math.floor(seconds / 60);
   const restSeconds = seconds % 60;
   return `${String(minutes).padStart(2, "0")}:${String(restSeconds).padStart(2, "0")}`;
 }
 
+function getElapsedSeconds() {
+  if (!state.startedAt) return 0;
+
+  return Math.max(0, Math.round((Date.now() - state.startedAt) / 1000));
+}
+
 function finishGame() {
   clearTimer();
+  state.elapsedSeconds = getElapsedSeconds();
   state.screen = "result";
   render();
 }
@@ -285,17 +466,14 @@ function startTimerIfNeeded() {
 
   clearTimer();
 
-  if (timeOption.seconds === null) {
-    return;
-  }
-
   timerId = window.setInterval(() => {
     if (state.screen !== "play") {
       clearTimer();
       return;
     }
 
-    if (state.remainingSeconds === null) {
+    if (timeOption.seconds === null) {
+      render();
       return;
     }
 
@@ -311,11 +489,13 @@ function startTimerIfNeeded() {
 }
 
 function startGame() {
-  const words = shuffle(getWordsForMode(state.selectedModeKey));
+  const words = shuffle(getWordsForSelection(state.selectedPlayStyleKey, state.selectedModeKey));
   state.words = isUnlimitedMode() ? words.slice(0, 10) : words;
   state.currentIndex = 0;
   state.roundCount = 1;
   state.correctCount = 0;
+  state.startedAt = Date.now();
+  state.elapsedSeconds = 0;
   state.screen = "play";
   startTimerIfNeeded();
   render();
@@ -335,7 +515,7 @@ function goToNextWord(countAsCorrect) {
   }
 
   if (!unlimitedMode && isLastWord) {
-    state.words = shuffle(getWordsForMode(state.selectedModeKey));
+    state.words = shuffle(getWordsForSelection(state.selectedPlayStyleKey, state.selectedModeKey));
     state.currentIndex = 0;
   } else {
     state.currentIndex += 1;
@@ -353,6 +533,8 @@ function resetGame() {
   state.roundCount = 0;
   state.correctCount = 0;
   state.remainingSeconds = null;
+  state.startedAt = null;
+  state.elapsedSeconds = 0;
   render();
 }
 
@@ -364,6 +546,22 @@ function quitGame() {
 }
 
 function renderStartScreen() {
+  const playStyleButtons = playStyles
+    .map((style) => {
+      const selectedClass = style.key === state.selectedPlayStyleKey ? "is-selected" : "";
+
+      return `
+        <button
+          type="button"
+          class="mode-button ${selectedClass}"
+          data-play-style-key="${style.key}"
+        >
+          ${style.label}
+        </button>
+      `;
+    })
+    .join("");
+
   const modeButtons = quizModes
     .map((mode) => {
       const selectedClass = mode.key === state.selectedModeKey ? "is-selected" : "";
@@ -396,18 +594,21 @@ function renderStartScreen() {
     })
     .join("");
 
+  const selectedPlayStyle = getSelectedPlayStyle();
   const selectedMode = getSelectedMode();
 
   return `
     <section class="screen screen-start">
       <div class="stack">
-        <span class="eyebrow">2인용 단어 게임</span>
+        <span class="eyebrow">${selectedPlayStyle.eyebrow}</span>
         <div class="stack">
-          <h1 class="hero-title">말로 설명하고<br />친구와 맞혀요</h1>
-          <p class="hero-text">
-            카테고리 없이 섞인 제시어 10개가 하나씩 나와요.
-            <strong>한국어 문제</strong>와 <strong>영어 문제</strong> 중 하나를 고르고 시작하면 돼요.
-          </p>
+          <h1 class="hero-title">${selectedPlayStyle.title}</h1>
+          <p class="hero-text">${selectedPlayStyle.helper}</p>
+        </div>
+        <div class="stack">
+          <p class="screen-label">플레이 방식을 골라요</p>
+          <div class="mode-grid">${playStyleButtons}</div>
+          <p class="helper-text">${selectedPlayStyle.description}</p>
         </div>
         <div class="stack">
           <p class="screen-label">문제 언어를 골라요</p>
@@ -425,17 +626,21 @@ function renderStartScreen() {
 }
 
 function renderPlayScreen() {
+  const playStyle = getSelectedPlayStyle();
   const mode = getSelectedMode();
   const word = state.words[state.currentIndex] || "";
-  const timeLabel = formatTime(state.remainingSeconds);
+  const timeLabel = isUnlimitedMode()
+    ? formatTime(getElapsedSeconds())
+    : formatTime(state.remainingSeconds);
   const progressLabel = isUnlimitedMode() ? `${state.currentIndex + 1} / 10` : `${state.roundCount}번`;
+  const timeMetaLabel = isUnlimitedMode() ? "진행 시간" : "남은 시간";
 
   return `
     <section class="screen screen-play">
       <header class="play-header">
         <div>
-          <p class="screen-label">${mode.label}</p>
-          <h2 class="screen-title">지금 제시어를 설명해요</h2>
+          <p class="screen-label">${playStyle.resultLabel} · ${mode.label}</p>
+          <h2 class="screen-title">${playStyle.playTitle}</h2>
         </div>
         <button type="button" class="icon-button" data-action="quit" aria-label="게임 종료">
           <span class="icon-close" aria-hidden="true">
@@ -451,7 +656,7 @@ function renderPlayScreen() {
           <div class="status-chip">${progressLabel}</div>
         </div>
         <div class="play-meta">
-          <p class="helper-text">남은 시간</p>
+          <p class="helper-text">${timeMetaLabel}</p>
           <div class="status-chip">${timeLabel}</div>
         </div>
         <div class="play-meta">
@@ -472,7 +677,9 @@ function renderPlayScreen() {
 
 function renderResultScreen() {
   const timeOption = getSelectedTimeOption();
+  const playStyle = getSelectedPlayStyle();
   const mode = getSelectedMode();
+  const resultSummary = isUnlimitedMode() ? "총 10문제 중" : `총 ${state.roundCount}문제 진행`;
 
   return `
     <section class="screen screen-result">
@@ -484,11 +691,12 @@ function renderResultScreen() {
       </header>
 
       <div class="result-card">
-        <p class="helper-text">${mode.label}</p>
+        <p class="helper-text">${playStyle.resultLabel} · ${mode.label}</p>
         <p class="helper-text">${timeOption.label} 모드</p>
-        <p class="helper-text">${isUnlimitedMode() ? "총 10개 중" : `총 ${state.roundCount}문제 진행`}</p>
+        <p class="helper-text">${resultSummary}</p>
         <p class="result-score">${state.correctCount}개</p>
         <p class="result-text">맞혔어요</p>
+        <p class="helper-text">걸린 시간 ${formatTime(state.elapsedSeconds)}</p>
         <div class="result-actions">
           <button type="button" class="restart-button" data-action="restart">다시 하기</button>
         </div>
@@ -498,6 +706,13 @@ function renderResultScreen() {
 }
 
 function bindEvents() {
+  app.querySelectorAll("[data-play-style-key]").forEach((button) => {
+    button.addEventListener("click", () => {
+      state.selectedPlayStyleKey = button.dataset.playStyleKey || state.selectedPlayStyleKey;
+      render();
+    });
+  });
+
   app.querySelectorAll("[data-mode-key]").forEach((button) => {
     button.addEventListener("click", () => {
       state.selectedModeKey = button.dataset.modeKey || state.selectedModeKey;
